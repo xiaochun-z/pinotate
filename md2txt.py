@@ -6,6 +6,7 @@ import argparse
 # MacOS: ./md2txt.py --ignore-phrase 1  --output-single-file 1 --ignore-date-before "2000-03-28"
 # python ./md2txt.py --ignore-phrase 1  --output-single-file 1 --ignore-date-before "2000-03-28 14:02:54"
 
+
 class Word:
     def __init__(self, time, word):
         self.time = time
@@ -51,7 +52,6 @@ def read_book_from_file(file_path):
     return book
 
 
-# Example usage
 folder_path = "./"
 books = []
 for filename in os.listdir(folder_path):
@@ -73,7 +73,8 @@ if parser.parse_args().ignore_date_before:
     date_str = parser.parse_args().ignore_date_before
     if len(date_str.strip()) == 10:
         date_str += " 00:00:00"
-    ignore_date_before = datetime.datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S")
+    ignore_date_before = datetime.datetime.strptime(
+        date_str, "%Y-%m-%d %H:%M:%S")
 
 print(f"ignore_phrase: {args.ignore_phrase}")
 print(f"output_single_file: {args.output_single_file}")
@@ -85,7 +86,6 @@ all_words = []
 def save_book_to_file(book, args, ignore_date_before):
     print(f"Processing: {book.title}")
     # save to txt file
-    # Clean the book title for file name
     if args.output_single_file != 0:
         all_words.extend(book.words)
     else:
@@ -93,6 +93,7 @@ def save_book_to_file(book, args, ignore_date_before):
             ignore_date_before is None or word.time >= ignore_date_before)]
         if len(words) == 0:
             return
+        # Clean the book title for file name
         clean_title = "".join(
             c for c in book.title if c.isalnum() or c.isspace())
         with open(f"{clean_title}.txt", "w") as file:
